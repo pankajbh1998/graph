@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> v[100005];
+int weigh[100005];
+int p[100005];
+int find(int ve)
+{
+    while(ve!=p[ve])
+    {
+        int t=p[ve];
+        p[ve]=p[p[ve]];
+        ve=t;
+    }
+    return ve;
+}
+void unionf(int a,int b)
+{
+    int pa=find(a);
+    int pb=find(b);
+    if(pa==pb)
+        return;
+    if(weigh[pa]>weigh[pb])
+        p[pa]=pb;
+    else
+        p[pb]=pa;
+}
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int n,m;
+    cin>>n>>m;
+    for(int i=1;i<=n;i++)    
+    {
+        cin>>weigh[i];
+        p[i]=i;
+    }
+    for(int i=0;i<m;i++)
+    {
+        int a,b;
+        cin>>a>>b;
+        unionf(a,b);
+    }
+    set<int> st;
+    for(int i=1;i<=n;i++)
+    {
+        st.insert(find(i));
+    }
+    unsigned long long  sum=0;
+    for(auto it:st)
+    {
+        sum+=weigh[it];
+    }
+    cout<<sum<<endl;
+	return 0;
+}
