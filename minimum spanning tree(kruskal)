@@ -1,0 +1,69 @@
+
+Pankaj Bhardwaj <pankajbhardwaj19980@gmail.com>
+Tue, 28 Jan, 11:53 (2 days ago)
+to PANKAJ
+
+//kruskl algo by pankaj
+#include <bits/stdc++.h>
+using namespace std;
+typedef unsigned long long LL;
+
+struct node{
+    int x,y,weight;
+};
+
+struct node head[100005];
+int parent[100005];
+int v,e; 
+
+bool compare(struct node a,struct node b)
+{
+    return a.weight<b.weight;
+}
+int findf(int v)
+{
+    while(v!=parent[v])
+    {
+        int temp=parent[v];
+        parent[v]=parent[parent[v]];
+        v=temp;
+    }
+    return v;
+}
+bool unionf(int x,int y)
+{
+    int px=findf(x);
+    int py=findf(y);
+    if(px==py)
+        return 0;
+    parent[px]=py;
+    return 1;
+}
+LL kruskal()
+{
+    LL ans=0;
+    for(int i=0;i<e;i++)
+    {
+        if(unionf(head[i].x,head[i].y))
+        {
+            ans+=head[i].weight;
+        }
+    }
+    return ans;
+}
+int main() {
+cin>>v>>e;
+for(int i=0;i<=v;i++)
+   parent[i]=i;
+for(int i=0;i<e;i++)
+{
+   int x,y,weight;
+   cin>>weight>>x>>y;
+   head[i].x=x;
+   head[i].y=y;
+   head[i].weight=weight;
+}
+sort(head,head+e,compare);
+cout<<kruskal()<<endl;
+return 0;
+}
